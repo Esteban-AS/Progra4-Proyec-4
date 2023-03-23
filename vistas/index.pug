@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    title Rentar Vehiculos
+    link(rel='stylesheet', href='/path/to/your/style.css')
+  
+  body
+
+    //agregar acción y método
+    form(action='rentar', method='POST') 
+      h2 Rentar Vehiculos
+      
+      input(type="text" placeholder="Cedula" name="cedula" required)
+      br
+      
+      input(type="text" placeholder="Placa" name="placa" required)
+      br
+      
+      input(type="number" placeholder="Cantidad Dias" name="cantidad_Dias" required)
+      br
+      
+      input(type="number" placeholder="Precio" name="precio" required)
+      br
+      button(type="submit" id="btnRentar") Rentar
+      
+
+    form(action="devolucion", method='POST')
+      h2 Devolución Vehiculos 
+
+      input(type="text" placeholder="Placa" name="placa" required)
+      br
+      button(type="submit" id="btnDevolucion") Devolución
+    
+    label(id="lblResultado") #{mensaje}
+    br
+    button(type="submit" id="btnConsultar") Consultar
+    
+    
