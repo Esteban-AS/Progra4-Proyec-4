@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Mantenimiento Vehiculos
+    body 
+      h2 Mantenimiento Vehiculos
+      form(action='/agregar', method="POST")
+        label(for="placa") Placa:
+        input(type="text" name="placa" required)
+
+        label(for="marca") Marca:
+        input(type="text" name="marca" required)
+
+        label(for="tipo") Tipo:
+        input(type="text" name="tipo" required)
+
+        label(for="disponibilidad") Disponibilidad:
+        input(type="text" name="disponibilidad" required)
+
+        label(for="precio_Renta") Precio de renta:
+        input(type="number" name="precio_Renta" required)
+
+        button(type="submit" id="btnAgregar") Agregar vehículo
+    label(id="lblResultado") #{mensaje}

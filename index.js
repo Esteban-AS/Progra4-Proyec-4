@@ -1,5 +1,6 @@
 import express from 'express'
-import {agregarContrato, eliminarContrato} from './mongo_config/mongo_config.js'
+import {Vehiculo, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
+    consultarVehiculos, buscarVehiculoPorId,modificarVehiculo, eliminarVehiculo} from './mongo_config/mongo_config.js'
 
 const app = express()
 
@@ -16,8 +17,9 @@ app.listen('8000', (req, res)=> {
     console.log('Aplicacion en http://localhost:8000')
 })
 
-app.get('/', (req, res)=> {
-    res.render('index')
+app.get('/', async(req, res)=> {
+    let vehiculos = await todosLosVehiculos(Vehiculo)
+    res.render('index', {vehiculos})
 })
 
 app.post('/rentar', (req, res)=>{
@@ -26,4 +28,12 @@ app.post('/rentar', (req, res)=>{
 
 app.post('/devolucion', (req, res)=>{
     eliminarContrato(req, res)
+})
+
+app.get('/manteCarros', (req, res)=>{
+    res.render('manteCarros')
+})
+
+app.post('/agregar', (req, res)=>{
+    agregarVehiculo(req, res)
 })
