@@ -1,6 +1,6 @@
 import express from 'express'
 import {Vehiculo, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
-    consultarVehiculos, buscarVehiculoPorId,modificarVehiculo, eliminarVehiculo} from './mongo_config/mongo_config.js'
+    consultarVehiculos, buscarVehiculoPorPlaca,modificarVehiculo, eliminarVehiculo} from './mongo_config/mongo_config.js'
 
 const app = express()
 
@@ -30,10 +30,9 @@ app.post('/devolucion', (req, res)=>{
     eliminarContrato(req, res)
 })
 
-app.get('/manteCarros', (req, res)=>{
-    res.render('manteCarros')
-})
-
 app.post('/agregar', (req, res)=>{
     agregarVehiculo(req, res)
 })
+
+
+  

@@ -82,6 +82,7 @@ vehiculo.save()
 .then(re =>{
     res.locals.mensaje = 'El vehiculo se agrego con exito'
     res.render('manteCarros', { mensaje: res.locals.mensaje })
+
 })
 .catch(err => {
     console.error(err);
@@ -91,24 +92,24 @@ vehiculo.save()
 };
 
 // Consultar todos los vehículos
-const consultarVehiculos = async () => {
-  const resultados = await Vehiculo.find({});
+const consultarVehiculos = async (modeloVehiculo) => {
+  const resultados = await modeloVehiculo.find({});
   return resultados;
 };
 
-// Buscar un vehículo por ID
-const buscarVehiculoPorId = async (id) => {
-  const resultado = await Vehiculo.findById(id);
+// Buscar un vehículo por placa
+const buscarVehiculoPorPlaca = async (placa) => {
+  const resultado = await Vehiculo.findById(placa);
   return resultado;
 };
 
-// Modificar un vehículo por ID
+// Modificar un vehículo por placa
 const modificarVehiculo = async (id, datosVehiculo) => {
   const resultado = await Vehiculo.findByIdAndUpdate(id, datosVehiculo, { new: true });
   return resultado;
 };
 
-// Eliminar un vehículo por ID
+// Eliminar un vehículo por placa
 const eliminarVehiculo = async (id) => {
   const resultado = await Vehiculo.findByIdAndDelete(id);
   return resultado;
@@ -116,5 +117,4 @@ const eliminarVehiculo = async (id) => {
 
 
 export {Vehiculo, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
-consultarVehiculos, buscarVehiculoPorId,modificarVehiculo, eliminarVehiculo}
-
+consultarVehiculos, buscarVehiculoPorPlaca,modificarVehiculo, eliminarVehiculo}
