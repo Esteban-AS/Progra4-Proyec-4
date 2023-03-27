@@ -79,15 +79,17 @@ const agregarVehiculo = (req, res) => {
     precio_Renta: Number(req.body.precio_Renta) 
 })
 vehiculo.save()
-.then(re =>{
-    res.locals.mensaje = 'El vehiculo se agrego con exito'
-    res.render('manteCarros', { mensaje: res.locals.mensaje })
-
-})
-.catch(err => {
-    console.error(err);
-    res.locals.mensaje = 'No se pudo agregar el vehiculo'
-    res.render('manteCarros', { mensaje: res.locals.mensaje })
+  .then(() => {
+    return Vehiculo.find(); // Busca todos los vehículos después de agregar uno nuevo
+  })
+  .then((vehiculos) => {
+    res.locals.mensaje = 'El vehiculo se agrego con exito';
+    res.render('manteCarros', { vehiculos, mensaje: res.locals.mensaje }); // Pasa el arreglo de vehículos a la vista
+  })
+  .catch(err => {
+      console.error(err);
+      res.locals.mensaje = 'No se pudo agregar el vehiculo'
+      res.render('manteCarros', { mensaje: res.locals.mensaje })
   })
 };
 

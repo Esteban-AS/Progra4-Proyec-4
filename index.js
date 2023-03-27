@@ -34,5 +34,12 @@ app.post('/agregar', (req, res)=>{
     agregarVehiculo(req, res)
 })
 
+app.get('/manteCarros', async(req, res)=> {
+    let vehiculos = await consultarVehiculos(Vehiculo)
+    res.render('manteCarros', {vehiculos})
+})
 
-  
+app.post('/editarCarros', (req, res)=> {
+    modificarVehiculo(req, res)
+    res.render('editarCarros')
+})

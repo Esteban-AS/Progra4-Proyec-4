@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Editar o Eliminar
+    body 
+    
+        form(action='editarCarros', method='POST') 
+            h2 Editar Vehiculos
+            
+            input(type="text" placeholder="Placa" name="placa" required)
+            br
+            
+            input(type="text" placeholder="Marca" name="marca" required)
+            br
+            
+            input(type="text" placeholder="Tipo" name="tipo" required)
+            br
+
+            input(type="text" placeholder="Disponibilidad" name="disponibilidad" required)
+            br
+            
+            input(type="number" placeholder="Precio de Renta" name="precio_Renta" required)
+            br
+            button(type="submit" id="btnRentar") Modificar

@@ -7,7 +7,31 @@ html(lang="en")
       title Mantenimiento Vehiculos
   body 
     h2 Mantenimiento Vehiculos
-    
+    table
+      thead
+        tr
+          th Placa
+          th Marca
+          th Tipo
+          th Disponibilidad
+          th Precio de Renta
+          th Acciones
+      tbody
+        each vehiculo in vehiculos
+          // Utilizamos la placa del vehículo como identificador
+          tr(id=`${vehiculo.placa}-row`) 
+            td= vehiculo.placa
+            td= vehiculo.marca
+            td= vehiculo.tipo
+            td= vehiculo.disponibilidad
+            td= vehiculo.precio_Renta
+            td
+              a(href=`/vehiculos/editar/${vehiculo._id}`) Modificar o Eliminar
+              form(action=`/eliminar/${vehiculo.id}`, method='POST',)
+                button.btn.btn-danger(type='button', onclick=`eliminarVehiculo('${vehiculo.id}')`) Eliminar
+
+
+
     form(action='/agregar', method="POST")
       label(for="placa") Placa:
       input(type="text" name="placa" required)
@@ -25,11 +49,7 @@ html(lang="en")
       input(type="number" name="precio_Renta" required)
       br
       br
-      button(type="submit" id="btnAgregar") Agregar 
-      button(type="button" id="btnConsultar") Consultar 
-      button(type="button" id="btnBuscar") Buscar 
-      button(type="button" id="btnModificar") Modificar 
-      button(type="button" id="btnEliminar") Eliminar 
+      button(type="submit" id="btnAgregar") Agregar  
     label(id="lblResultado") #{mensaje}
 
 
