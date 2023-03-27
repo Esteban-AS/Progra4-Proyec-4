@@ -5,7 +5,24 @@ html
     link(rel='stylesheet', href='/path/to/your/style.css')
   
   body
-    
+    table
+      thead
+          tr
+              th Placa
+              th Marca
+              th Tipo
+              th Disponibilidad
+              th Precio de Renta
+              th Acciones
+      tbody
+          each vehiculo in vehiculos
+              tr
+                  td= vehiculo.placa
+                  td= vehiculo.marca
+                  td= vehiculo.tipo
+                  td= vehiculo.disponibilidad
+                  td= vehiculo.precio_Renta
+
     //agregar acción y método
     form(action='rentar', method='POST') 
       h2 Rentar Vehiculos
@@ -33,7 +50,7 @@ html
     
     label(id="lblResultado") #{mensaje}
     button(type='button', onclick='location.href="/manteCarros"') Mante
-    button(type='button', onclick='location.href="/editarCarros"') Editar
+    button(type='button', onclick='location.href="/modificar"') Editar
 
     
     

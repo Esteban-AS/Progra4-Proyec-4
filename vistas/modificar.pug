@@ -1,0 +1,53 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Modificar o Eliminar
+    body 
+        table
+            thead
+                tr
+                    th Placa
+                    th Marca
+                    th Tipo
+                    th Disponibilidad
+                    th Precio de Renta
+                    th Acciones
+            tbody
+                each vehiculo in vehiculos
+                    tr
+                        td= vehiculo.placa
+                        td= vehiculo.marca
+                        td= vehiculo.tipo
+                        td= vehiculo.disponibilidad
+                        td= vehiculo.precio_Renta
+        
+        form(action='modificarCarro', method='Post') 
+            h2 Editar Vehiculos
+            
+            input(type="text" placeholder="Placa" name="placa" required)
+            br
+            input(type="text" placeholder="Marca" name="marca" )
+            br
+            
+            input(type="text" placeholder="Tipo" name="tipo" )
+            br
+
+            input(type="text" placeholder="Disponibilidad" name="disponibilidad" )
+            br
+            
+            input(type="number" placeholder="Precio de Renta" name="precio_Renta" )
+            br
+            button(type="submit" id="btnModificar") Modificar
+            
+        label(id="lblResultado") #{mensaje}
+        br
+        br
+        form(action="eliminarCarro", method="post")
+            input(type="text" placeholder="Placa" name="placa" required)
+            br
+            button(type="submit" id="btnEliminar") Eliminar
+
+            

@@ -28,6 +28,7 @@ const Contrato = mongoose.model('Contratos', contratoSchema)
 
 // Funciones
 
+// Agregar contratos de renta de carro
 const agregarContrato = (req, res)=> {
 
   const contrato = new Contrato({
@@ -37,9 +38,13 @@ const agregarContrato = (req, res)=> {
         precio_Total: Number(req.body.precio) 
   })
   contrato.save()
-  .then(re =>{
+  .then(() => {
+    return Vehiculo.find({ disponibilidad: "Disponible" }); // Busca todos los vehículos disponibles
+  })
+  .then((vehiculos)=>{
       res.locals.mensaje = 'Renta del vehiculo con exito'
-      res.render('index', { mensaje: res.locals.mensaje })
+      res.render('index', {vehiculos, mensaje: res.locals.mensaje })
+      res.redirect('/index');
     })
   .catch(err => {
       console.error(err);
@@ -48,6 +53,7 @@ const agregarContrato = (req, res)=> {
     })
 }
 
+// Elimina los Contratos por placa
 const eliminarContrato = (req, res) => {
     const placa = req.body.placa
     Contrato.findOneAndDelete({ placa: placa })
@@ -64,6 +70,7 @@ const eliminarContrato = (req, res) => {
       })
 }
 
+// Muestra todos los vehiculos disponibles
 const todosLosVehiculos = async(modelo) => {
   const resultados = await modelo.find({ disponibilidad: "Disponible" })
   return resultados
@@ -99,24 +106,49 @@ const consultarVehiculos = async (modeloVehiculo) => {
   return resultados;
 };
 
-// Buscar un vehículo por placa
-const buscarVehiculoPorPlaca = async (placa) => {
-  const resultado = await Vehiculo.findById(placa);
-  return resultado;
-};
-
 // Modificar un vehículo por placa
-const modificarVehiculo = async (id, datosVehiculo) => {
-  const resultado = await Vehiculo.findByIdAndUpdate(id, datosVehiculo, { new: true });
-  return resultado;
+const modificarVehiculo = async (req, res) => {
+  try {
+    const placa = req.body.placa;
+    const nuevosDatos = {
+      marca: req.body.marca,
+      tipo: req.body.tipo,
+      disponibilidad: req.body.disponibilidad,
+      precio_Renta: Number(req.body.precio_Renta)
+    };
+    const resultado = await Vehiculo.findOneAndUpdate(
+      { placa },
+      nuevosDatos,
+      { new: true }
+    );
+    // Busca todos los vehículos después de modificar uno
+    const vehiculos = await  Vehiculo.find();
+    res.locals.mensaje = 'El vehiculo se modificó con éxito';
+    res.render('modificar', {vehiculos ,mensaje: res.locals.mensaje });
+    res.redirect('/modificar');
+  } catch (error) {
+    console.log(error);
+    res.locals.mensaje = 'No se pudo modificar el vehiculo';
+    res.render('modificar', { mensaje: res.locals.mensaje });
+  }
 };
 
 // Eliminar un vehículo por placa
-const eliminarVehiculo = async (id) => {
-  const resultado = await Vehiculo.findByIdAndDelete(id);
-  return resultado;
+const eliminarVehiculoPorPlaca = (req, res) => {
+    const placa = req.body.placa
+    Vehiculo.findOneAndDelete({ placa: placa })
+      .then(() => {
+        res.locals.mensaje = 'El vehiculo se elimino con exito'
+        res.render('modificar', { mensaje: res.locals.mensaje })
+        res.redirect('/modificar');
+      })
+      .catch(err => {
+        console.error(err);
+        res.locals.mensaje = 'No se pudo eliminar el vehiculo'
+        res.render('modificar', { mensaje: res.locals.mensaje })
+        res.redirect('/modificar');
+      })
 };
 
-
-export {Vehiculo, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
-consultarVehiculos, buscarVehiculoPorPlaca,modificarVehiculo, eliminarVehiculo}
+export {Vehiculo,eliminarVehiculoPorPlaca, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
+consultarVehiculos, modificarVehiculo}
