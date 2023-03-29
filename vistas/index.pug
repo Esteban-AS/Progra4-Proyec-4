@@ -1,10 +1,20 @@
 doctype html
 html
   head
-    title Rentar Vehiculos
-    link(rel='stylesheet', href='/path/to/your/style.css')
+    title Rentar - Devolución Vehiculos
+    link(rel='stylesheet', href='estilo-1.css')
   
   body
+    .header
+    h1 Renta y Devolucion de Vehiculos
+    
+    // Barra de navegacion
+    nav.navbar
+    a(href='manteCarros') Agregar Vehiculos
+    a(href='modificar') Modificar Vehiculos
+    a(href='modificar') Eliminar Vehiculos
+    
+    // Tabla de los Vehiculos disponibles 
     table
       thead
           tr
@@ -39,7 +49,22 @@ html
       input(type="number" placeholder="Precio" name="precio" required)
       br
       button(type="submit" id="btnRentar") Rentar
-      
+
+    // Tabla de los Contratos  
+    table
+      thead
+          tr
+              th Cedula
+              th Placa
+              th Cantidad de Días
+              th Precio Total
+      tbody
+          each contrato in contratos
+              tr
+                  td= contrato.cedula
+                  td= contrato.placa
+                  td= contrato.cantidad_Dias
+                  td= contrato.precio_Total
 
     form(action="devolucion", method='POST')
       h2 Devolución Vehiculos 

@@ -5,7 +5,7 @@ const {Schema} =  mongoose
 const url_conexion = 'mongodb+srv://arayaesteban25:123MongoDB@cluster0.zjteqia.mongodb.net/bd_AppRentas?retryWrites=true&w=majority'
 mongoose.connect(url_conexion, {useNewUrlParser: true, useUnifiedTopology: true});
 
-// esquema para la coleccion
+// esquemas para la coleccion
 const vehiculoSchema = new Schema({
     placa: String,
     marca: String,
@@ -38,12 +38,16 @@ const agregarContrato = (req, res)=> {
         precio_Total: Number(req.body.precio) 
   })
   contrato.save()
+  Vehiculo.findOneAndUpdate({ placa: req.body.placa }, { disponibilidad: "No disponible" })
   .then(() => {
-    return Vehiculo.find({ disponibilidad: "Disponible" }); // Busca todos los vehículos disponibles
+    return Promise.all([
+      Vehiculo.find({ disponibilidad: "Disponible" }), // Busca todos los vehículos disponibles
+      Contrato.find()
+    ])
   })
-  .then((vehiculos)=>{
+  .then(([vehiculos, contratos])=>{
       res.locals.mensaje = 'Renta del vehiculo con exito'
-      res.render('index', {vehiculos, mensaje: res.locals.mensaje })
+      res.render('index', {vehiculos, contratos, mensaje: res.locals.mensaje })
       res.redirect('/index');
     })
   .catch(err => {
@@ -53,22 +57,37 @@ const agregarContrato = (req, res)=> {
     })
 }
 
-// Elimina los Contratos por placa
+// Elimina los Contratos por placa (Devolucion)
 const eliminarContrato = (req, res) => {
     const placa = req.body.placa
-    Contrato.findOneAndDelete({ placa: placa })
-      .then(() => {
+    Promise.all([
+      Contrato.findOneAndDelete({ placa: placa }),
+      Vehiculo.findOneAndUpdate({ placa: placa }, { disponibilidad: "Disponible" })
+    ])
+    //Contrato.findOneAndDelete({ placa: placa })
+    //Vehiculo.findOneAndUpdate({ placa: placa }, { disponibilidad: "Disponible" })
+      .then(() => { 
+        return Promise.all([
+          Vehiculo.find({ disponibilidad: "Disponible" }), // Busca todos los vehículos disponibles
+          Contrato.find() // Busca todos los contratos después de eliminar uno
+        ])
+      })
+      .then(([vehiculos, contratos]) => {
         res.locals.mensaje = 'La devolución se realizo con exito'
-        res.render('index', { mensaje: res.locals.mensaje })
-        res.redirect('/');
+        res.render('index', {vehiculos, contratos, mensaje: res.locals.mensaje })
       })
       .catch(err => {
         console.error(err);
         res.locals.mensaje = 'No se pudo realizar la devolución'
         res.render('index', { mensaje: res.locals.mensaje })
-        res.redirect('/');
       })
 }
+
+// Consultar todos los vehículos
+const consultarContratos = async (modeloContrato) => {
+  const resultados = await modeloContrato.find({});
+  return resultados;
+};
 
 // Muestra todos los vehiculos disponibles
 const todosLosVehiculos = async(modelo) => {
@@ -150,5 +169,5 @@ const eliminarVehiculoPorPlaca = (req, res) => {
       })
 };
 
-export {Vehiculo,eliminarVehiculoPorPlaca, agregarContrato, eliminarContrato, todosLosVehiculos, agregarVehiculo, 
+export {Vehiculo, Contrato, eliminarVehiculoPorPlaca, agregarContrato, eliminarContrato, consultarContratos, todosLosVehiculos, agregarVehiculo, 
 consultarVehiculos, modificarVehiculo}
