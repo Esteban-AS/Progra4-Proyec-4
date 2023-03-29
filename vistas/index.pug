@@ -2,80 +2,85 @@ doctype html
 html
   head
     title Rentar - Devolución Vehiculos
-    link(rel='stylesheet', href='estilo-1.css')
+    link(rel='stylesheet', href='./estilo-1.css')
+    link(rel='stylesheet', href='./estilo-2.css')
+    link(rel='stylesheet', href='./estilo-3.css')
   
   body
-    .header
-    h1 Renta y Devolucion de Vehiculos
+    div.header
+      h2 Renta y Devolucion de Vehiculos
     
     // Barra de navegacion
-    nav.navbar
-    a(href='manteCarros') Agregar Vehiculos
-    a(href='modificar') Modificar Vehiculos
-    a(href='modificar') Eliminar Vehiculos
-    
-    // Tabla de los Vehiculos disponibles 
-    table
-      thead
-          tr
-              th Placa
-              th Marca
-              th Tipo
-              th Disponibilidad
-              th Precio de Renta
-              th Acciones
-      tbody
-          each vehiculo in vehiculos
+    div.navbar
+      nav
+        a(href='manteCarros') Agregar Vehiculos
+        a(href='modificar') Modificar Vehiculos
+        a(href='modificar') Eliminar Vehiculos
+
+    //prueba columnas .main
+    div.row
+      h3 Vehiculos Disponibles
+      div.main
+        // Tabla de los Vehiculos disponibles 
+        table
+          thead
               tr
-                  td= vehiculo.placa
-                  td= vehiculo.marca
-                  td= vehiculo.tipo
-                  td= vehiculo.disponibilidad
-                  td= vehiculo.precio_Renta
+                  th Placa
+                  th Marca
+                  th Tipo
+                  th Disponibilidad
+                  th Precio de Renta
+                  
+          tbody
+              each vehiculo in vehiculos
+                  tr
+                      td= vehiculo.placa
+                      td= vehiculo.marca
+                      td= vehiculo.tipo
+                      td= vehiculo.disponibilidad
+                      td= vehiculo.precio_Renta
 
     //agregar acción y método
     form(action='rentar', method='POST') 
       h2 Rentar Vehiculos
       
-      input(type="text" placeholder="Cedula" name="cedula" required)
-      br
-      
-      input(type="text" placeholder="Placa" name="placa" required)
-      br
-      
-      input(type="number" placeholder="Cantidad Dias" name="cantidad_Dias" required)
-      br
-      
-      input(type="number" placeholder="Precio" name="precio" required)
-      br
-      button(type="submit" id="btnRentar") Rentar
+      input.rounded(type="text" placeholder="Cedula" name="cedula" required)
 
-    // Tabla de los Contratos  
-    table
-      thead
-          tr
-              th Cedula
-              th Placa
-              th Cantidad de Días
-              th Precio Total
-      tbody
-          each contrato in contratos
+      input.rounded(type="text" placeholder="Placa" name="placa" required)
+
+      input.rounded(type="number" placeholder="Cantidad Dias" name="cantidad_Dias" required)
+
+      input.rounded(type="number" placeholder="Precio" name="precio" required)
+      button.button(type="submit" id="btnRentar") Rentar
+       
+    div.row
+      h3 Contratos Actuales
+      div.main
+        // Tabla de los Contratos  
+        table
+          thead
               tr
-                  td= contrato.cedula
-                  td= contrato.placa
-                  td= contrato.cantidad_Dias
-                  td= contrato.precio_Total
+                  th Cedula
+                  th Placa
+                  th Cantidad de Días
+                  th Precio de Renta
+                  th Precio Total
+          tbody
+              each contrato in contratos
+                  tr
+                      td= contrato.cedula
+                      td= contrato.placa
+                      td= contrato.cantidad_Dias
+                      td= contrato.precio_Renta
+                      td= contrato.precio_Total
 
     form(action="devolucion", method='POST')
       h2 Devolución Vehiculos 
 
-      input(type="text" placeholder="Placa" name="placa" required)
-      br
-      button(type="submit" id="btnDevolucion") Devolución
+      input.rounded(type="text" placeholder="Placa" name="placa" required)
+      button.button(type="submit" id="btnDevolucion") Devolución
     
     label(id="lblResultado") #{mensaje}
-    button(type='button', onclick='location.href="/manteCarros"') Mante
-    button(type='button', onclick='location.href="/modificar"') Editar
 
     
     

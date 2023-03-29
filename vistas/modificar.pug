@@ -5,49 +5,62 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Modificar o Eliminar
-    body 
-        table
-            thead
-                tr
-                    th Placa
-                    th Marca
-                    th Tipo
-                    th Disponibilidad
-                    th Precio de Renta
-                    th Acciones
-            tbody
-                each vehiculo in vehiculos
-                    tr
-                        td= vehiculo.placa
-                        td= vehiculo.marca
-                        td= vehiculo.tipo
-                        td= vehiculo.disponibilidad
-                        td= vehiculo.precio_Renta
+        link(rel='stylesheet', href='./estilo-1.css')
+        link(rel='stylesheet', href='./estilo-2.css')
+        link(rel='stylesheet', href='./estilo-3.css')
+
+    body
+        div.header
+            h2 Mantenimiento de Vehiculos
+        
+        // Barra de navegacion
+        div.navbar
+            nav
+                a(href='manteCarros') Agregar Vehiculos
+                a(href='/') Renta de Vehiculos
+                a(href='/') Devolución de Vehiculos
+        div.row 
+            h3 Vehiculos 
+            div.main 
+                table.tabla
+                    thead
+                        tr
+                            th Placa
+                            th Marca
+                            th Tipo
+                            th Disponibilidad
+                            th Precio de Renta por Día
+                    tbody
+                        each vehiculo in vehiculos
+                            tr
+                                td= vehiculo.placa
+                                td= vehiculo.marca
+                                td= vehiculo.tipo
+                                td= vehiculo.disponibilidad
+                                td= vehiculo.precio_Renta
         
         form(action='modificarCarro', method='Post') 
-            h2 Editar Vehiculos
+            h3 Modificar Vehiculos
             
-            input(type="text" placeholder="Placa" name="placa" required)
-            br
-            input(type="text" placeholder="Marca" name="marca" )
-            br
+            input.rounded(type="text" placeholder="Placa" name="placa" required)
             
-            input(type="text" placeholder="Tipo" name="tipo" )
-            br
+            input.rounded(type="text" placeholder="Marca" name="marca" )
 
-            input(type="text" placeholder="Disponibilidad" name="disponibilidad" )
-            br
+            input.rounded(type="text" placeholder="Tipo" name="tipo" )
+
+            input.rounded(type="text" placeholder="Disponibilidad" name="disponibilidad" )
             
-            input(type="number" placeholder="Precio de Renta" name="precio_Renta" )
-            br
-            button(type="submit" id="btnModificar") Modificar
+            input.rounded(type="number" placeholder="Precio de Renta" name="precio_Renta" )
+            
+            button.button(type="submit" id="btnModificar") Modificar
             
         label(id="lblResultado") #{mensaje}
-        br
-        br
+        
+
         form(action="eliminarCarro", method="post")
-            input(type="text" placeholder="Placa" name="placa" required)
-            br
-            button(type="submit" id="btnEliminar") Eliminar
+            h3 Elminar Vehiculos
+            input.rounded(type="text" placeholder="Placa" name="placa" required)
+            
+            button.button(type="submit" id="btnEliminar") Eliminar
 
             

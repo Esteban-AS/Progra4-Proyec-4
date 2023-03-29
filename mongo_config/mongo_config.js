@@ -18,6 +18,7 @@ const contratoSchema = new Schema({
     cedula: Number,
     placa: String,
     cantidad_Dias: Number,
+    precio_Renta: Number,
     precio_Total: Number
 })
 
@@ -30,12 +31,14 @@ const Contrato = mongoose.model('Contratos', contratoSchema)
 
 // Agregar contratos de renta de carro
 const agregarContrato = (req, res)=> {
-
+  const cantidadDias = Number(req.body.cantidad_Dias);
+  const precioRenta = Number(req.body.precio);
   const contrato = new Contrato({
         cedula: Number(req.body.cedula),
         placa: req.body.placa,
-        cantidad_Dias: Number(req.body.cantidad_Dias),
-        precio_Total: Number(req.body.precio) 
+        cantidad_Dias: cantidadDias,
+        precio_Renta: precioRenta,
+        precio_Total: cantidadDias * precioRenta  
   })
   contrato.save()
   Vehiculo.findOneAndUpdate({ placa: req.body.placa }, { disponibilidad: "No disponible" })
@@ -48,7 +51,6 @@ const agregarContrato = (req, res)=> {
   .then(([vehiculos, contratos])=>{
       res.locals.mensaje = 'Renta del vehiculo con exito'
       res.render('index', {vehiculos, contratos, mensaje: res.locals.mensaje })
-      res.redirect('/index');
     })
   .catch(err => {
       console.error(err);
@@ -64,8 +66,6 @@ const eliminarContrato = (req, res) => {
       Contrato.findOneAndDelete({ placa: placa }),
       Vehiculo.findOneAndUpdate({ placa: placa }, { disponibilidad: "Disponible" })
     ])
-    //Contrato.findOneAndDelete({ placa: placa })
-    //Vehiculo.findOneAndUpdate({ placa: placa }, { disponibilidad: "Disponible" })
       .then(() => { 
         return Promise.all([
           Vehiculo.find({ disponibilidad: "Disponible" }), // Busca todos los vehículos disponibles
@@ -144,7 +144,6 @@ const modificarVehiculo = async (req, res) => {
     const vehiculos = await  Vehiculo.find();
     res.locals.mensaje = 'El vehiculo se modificó con éxito';
     res.render('modificar', {vehiculos ,mensaje: res.locals.mensaje });
-    res.redirect('/modificar');
   } catch (error) {
     console.log(error);
     res.locals.mensaje = 'No se pudo modificar el vehiculo';
@@ -157,15 +156,16 @@ const eliminarVehiculoPorPlaca = (req, res) => {
     const placa = req.body.placa
     Vehiculo.findOneAndDelete({ placa: placa })
       .then(() => {
+        return Vehiculo.find(); // Busca todos los vehículos después de agregar uno nuevo
+      })
+      .then((vehiculos) => {
         res.locals.mensaje = 'El vehiculo se elimino con exito'
-        res.render('modificar', { mensaje: res.locals.mensaje })
-        res.redirect('/modificar');
+        res.render('modificar', {vehiculos, mensaje: res.locals.mensaje })
       })
       .catch(err => {
         console.error(err);
         res.locals.mensaje = 'No se pudo eliminar el vehiculo'
         res.render('modificar', { mensaje: res.locals.mensaje })
-        res.redirect('/modificar');
       })
 };
 

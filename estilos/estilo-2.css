@@ -1,0 +1,23 @@
+.nav-enlace{
+    display: inline-block;
+    background: rgb(13, 170, 233);
+    color:#29aa09;
+    padding: 10px 30px;
+    text-decoration: none;
+}
+.nav-enlace:hover{
+    background: #ffffff;
+}
+nav{
+    background: rgb(50, 57, 66);
+    padding: 10px;
+    display: flex;
+    justify-content: space-around; 
+}
+.nav-boton{
+    background: rgb(7, 177, 255);
+    color: rgb(255, 251, 251);
+    padding: 10px 0;
+    border: 2px solid rgb(255, 255, 255);
+    display: none;
+}
